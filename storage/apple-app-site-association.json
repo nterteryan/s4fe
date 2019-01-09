@@ -1,0 +1,17 @@
+{
+	"activitycontinuation": {
+		"apps": [
+		  "SAZ99S3T4C.com.s4fe.S4FE"
+		]
+	},
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "SAZ99S3T4C.com.s4fe.S4FE",
+                "paths": [ "*" ]
+            }
+        ]
+    }
+}
+

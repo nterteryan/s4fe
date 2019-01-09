@@ -1,1 +1,3 @@
-# s4fe
+# global-api
+
+sh install.sh

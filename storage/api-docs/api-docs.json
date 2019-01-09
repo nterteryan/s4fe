@@ -1,0 +1,3506 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SAFE REST API",
+        "description": "SAFE REST API.  You can findout more about S4FE at [WEB APP](https://s4febeta.testingdevelopmentprocess.com)",
+        "termsOfService": "/api/docs/termsOfService",
+        "contact": {
+            "email": "no_reply@s4fe.io"
+        },
+        "license": {
+            "name": "License Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "2.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://s4fe-api.local",
+            "description": "S4FEAPI local server"
+        },
+        {
+            "url": "https://betaapi.s4fe.io",
+            "description": "S4FEAPI Prod server"
+        },
+        {
+            "url": "https://s4febetaapi.testingdevelopmentprocess.com",
+            "description": "S4FEAPI Dev server"
+        }
+    ],
+    "paths": {
+        "/authenticate": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Oauth2 Authentication. Get user + personal access token.",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "User email and password.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "admin@admin.com",
+                                    "password": "admin@admin.com1"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResponce"
+                                }
+                            }
+                        }
+                    },
+                    "307": {
+                        "description": "Temporary Redirect.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce307"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/send-verification-sms": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Send verification sms on phone number",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "application/json"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Enter valid phone number",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "phone": {
+                                        "type": "integer",
+                                        "example": "37494471010"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResponce"
+                                }
+                            }
+                        }
+                    },
+                    "307": {
+                        "description": "Temporary Redirect.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce307"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce400"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Create user and send verification email",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Enter User email and verified phone number",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "admin@admin.com"
+                                    },
+                                    "phone": {
+                                        "type": "integer",
+                                        "example": "37494555555"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegisterResponce"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce400"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Set password by verified email or phone",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Enter User (email or verified phone number) + (password and password_confirmation)",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "admin@admin.com(optional if the phone is set)"
+                                    },
+                                    "phone": {
+                                        "type": "integer",
+                                        "example": "37494555555(optional if the email is set)"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "admin@admin.com1"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "admin@admin.com1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegisterResponce"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce400"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/signup-forward/{email}": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Forward email to complete registration.",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "description": "Not compleated user email",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "string",
+                            "example": "admin@admin.com"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce2xx"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce400"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/email/verify/{hash}": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Identify Not-Completed Sign up User process By Hesh",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "description": "Hash for completing signup process",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegisterResponce"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/phone/verify/{hash}": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Verifying phone number by hash.",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "application.json"
+                        }
+                    },
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "description": "Hash for verifying phone number",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce2xx"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reset-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Send verification email for resetting password.",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Enter User email",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "admin@admin.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce2xx"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/reset-password-by-hash/{hash}": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Reset Password By Hesh",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "description": "Hash for resetting password.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResponce"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/me": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get auth user data",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "string",
+                            "example": "application/json"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "string",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Attach or exclude relations",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update auth user data",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string",
+                                    "example": "application/json"
+                                }
+                            },
+                            "type": "string",
+                            "example": "application/json"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "string",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Attach or exclude relations",
+                    "required": false,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "_method": {
+                                        "type": "string",
+                                        "example": "put"
+                                    },
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "middle_name": {
+                                        "type": "string"
+                                    },
+                                    "display_name": {
+                                        "type": "string"
+                                    },
+                                    "nationality": {
+                                        "type": "string"
+                                    },
+                                    "birth_date": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "photo": {
+                                        "type": "file",
+                                        "format": "file"
+                                    },
+                                    "gender": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Responce2xx"
+                                        },
+                                        {
+                                            "property": "data",
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/User"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce400"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/wallet": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Setup ethereum wallet for user",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "password": "SomePasswordForWallet"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce2xx"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/linkWallet": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Link existing ethereum wallet for user",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "walletAddress": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "walletAddress": "0x0531402f9c8f80424f7c9b6a324441da0a486822"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce2xx"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/items": {
+            "get": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Get Items list",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Specify the number of records to return",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset relative to the beginning of the received list in a situation",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ItemResponce"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Create new Item",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Item required fields",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "status_id": {
+                                        "type": "integer"
+                                    },
+                                    "category_id": {
+                                        "type": "integer"
+                                    },
+                                    "reward": {
+                                        "type": "integer"
+                                    },
+                                    "serial_number": {
+                                        "type": "string"
+                                    },
+                                    "trasfer_ownership": {
+                                        "type": "integer"
+                                    },
+                                    "photos": {
+                                        "type": "object",
+                                        "example": []
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "201"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Created."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Item"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce400"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/items/{item_id}": {
+            "get": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Get Item by id",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "item_id",
+                        "in": "path",
+                        "description": "Existing Item id",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "item_id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Item"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Update Item",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string",
+                                    "example": "application/json"
+                                }
+                            },
+                            "type": "string",
+                            "example": "application/json"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string",
+                                    "example": "Bearer replace_with_access_token"
+                                }
+                            },
+                            "type": "string",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "item_id",
+                        "in": "path",
+                        "description": "Existing Item id",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "item_id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "integer",
+                            "example": "2"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Enter User email , password and password confirmation.",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "_method": {
+                                        "type": "string",
+                                        "example": "put"
+                                    },
+                                    "status_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "photos": {
+                                        "type": "array",
+                                        "items": {},
+                                        "example": []
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": "200"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Updated."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Item"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Delete item",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "item_id",
+                        "in": "path",
+                        "description": "Existing Item id",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "item_id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object",
+                            "example": "2"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need.",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK."
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/item-statuses": {
+            "get": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Get Item status list",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "application/json"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {},
+                                    "example": "{\r\n    status: 200, \r\n    message : 'Success.',\r\n    data: [\r\n        {\r\n            id : 1,\r\n            name : 'stolen'\r\n        },\r\n        {\r\n            id : 2,\r\n            name : 'lost'\r\n        }\r\n    ]\r\n}"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/items/delete-file/{item_id}/{file_name}": {
+            "delete": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Delete item file",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "item_id",
+                        "in": "path",
+                        "description": "Existing Item id",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "item_id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object",
+                            "example": "2"
+                        }
+                    },
+                    {
+                        "name": "file_name",
+                        "in": "path",
+                        "description": "Existing Item file name",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "file_name": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "5c0526e6d8990.jpg"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need.",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK."
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/items/reported": {
+            "get": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Get items with sent reports",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ItemResponce"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/items/founded": {
+            "get": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Get items with founded(received) reports",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "{}"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ItemResponce"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/item/{item_id}/reports": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Get item reports by item id",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": {
+                                "accept": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "item_id",
+                        "in": "path",
+                        "description": "Item id",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "item_id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Specify the number of records to return",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset relative to the beginning of the received list in a situation",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportResponce"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Add report to Item",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": {
+                                "accept": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "item_id",
+                        "in": "path",
+                        "description": "Item id",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "item_id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Report required fields",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "website": {
+                                        "type": "string"
+                                    },
+                                    "text": {
+                                        "type": "string"
+                                    },
+                                    "photos": {
+                                        "type": "file",
+                                        "example": []
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Responce2xx"
+                                        },
+                                        {
+                                            "property": "data",
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/Report"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Responce400"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/{report_id}": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Get report by id",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": {
+                                "accept": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "report_id",
+                        "in": "path",
+                        "description": "Report id",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "report_id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Responce2xx"
+                                        },
+                                        {
+                                            "property": "data",
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/Report"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/item/report-statuses": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Get item report statuses",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": {
+                                "accept": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {},
+                                    "example": "{\r\n    status: 200, \r\n    message : 'Success.',\r\n    data: [\r\n        {\r\n            id : 1,\r\n            name : 'pending'\r\n        },\r\n        {\r\n            id : 2,\r\n            name : 'approved'\r\n        },\r\n        {\r\n            id : 3,\r\n            name : 'rejected'\r\n        },\r\n        {\r\n            id : 4,\r\n            name : 'under_review'\r\n        }\r\n    ]\r\n}"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/{category_id}": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Get categories or category by id.",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": {
+                                "accept": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Authorization.",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "Category id",
+                        "required": false,
+                        "schema": {
+                            "properties": {
+                                "category_id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {},
+                                    "example": "{\r\n    status: 200, \r\n    message : 'Success.',\r\n    data: [\r\n        {\r\n            id: 1,\r\n            parent_id: null,\r\n            name: 'Accessories'\r\n        },\r\n        {\r\n            id: 22,\r\n            parent_id: null,\r\n            name: 'Automotive'\r\n        },\r\n        {\r\n            id: 39,\r\n            parent_id: null,\r\n            name: 'Bicycles'\r\n        }\r\n    ]\r\n}"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/{category_id}/subs": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Get subcategories  by category id.",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": {
+                                "accept": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "description": "Category id",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "category_id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {},
+                                    "example": "{\r\n    status: 200, \r\n    message : 'Success.',\r\n    data: [\r\n        {\r\n            id: 2,\r\n            parent_id: 1,\r\n            name: 'Handbags'\r\n        },\r\n        {\r\n            id: 3,\r\n            parent_id: 1,\r\n            name: 'Travel Bags'\r\n        },\r\n        {\r\n            id: 4,\r\n            parent_id: 1,\r\n            name: 'Suitcases'\r\n        }\r\n    ]\r\n}"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/search/items/{query}[/{filters}]": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Search items",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Define content type of response",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Accept": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": {
+                                "accept": "application/json"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer {access_token}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "Authorization": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object",
+                            "example": "Bearer replace_with_access_token"
+                        }
+                    },
+                    {
+                        "name": "query",
+                        "in": "path",
+                        "description": "{title + description + serial_number}",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "query": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "string",
+                            "example": "iPhone 12GPC55"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "path",
+                        "description": "{category_name + subcategory_name + status_name}",
+                        "required": false,
+                        "schema": {
+                            "properties": {
+                                "filters": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "string",
+                            "example": "iPhone 12GPC55"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "No need",
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SearchItemsResponce"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "title": "User",
+                "description": "User Model",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "item_report_banned": {
+                        "type": "integer"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "middle_name": {
+                        "type": "string"
+                    },
+                    "display_name": {
+                        "type": "string"
+                    },
+                    "nationality": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "photo": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "default": "male",
+                        "enum": [
+                            "male",
+                            "female"
+                        ]
+                    },
+                    "birth_date": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "walletAddress": {
+                        "type": "string"
+                    },
+                    "keystore": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/UserStatus"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "PrivateUser": {
+                "title": "PrivateUser",
+                "description": "User with limited data to display.",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "item_report_banned": {
+                        "type": "integer"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "display_name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserStatus": {
+                "title": "UserStatus",
+                "description": "User statuses",
+                "properties": {
+                    "name": {
+                        "type": "enum",
+                        "default": "pending",
+                        "enum": [
+                            "pending",
+                            "compleaded",
+                            "confirmed"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "Category": {
+                "title": "Category",
+                "description": "Categories",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "parent_id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Item": {
+                "title": "Item",
+                "description": "User Items",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "reward": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "serial_number": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/PrivateUser"
+                            }
+                        ]
+                    },
+                    "status": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ItemStatus"
+                            }
+                        ]
+                    },
+                    "category": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        ]
+                    },
+                    "transform_ownership": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/PrivateUser"
+                            }
+                        ]
+                    },
+                    "photos": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ItemPhotos"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ItemStatus": {
+                "title": "ItemStatus",
+                "description": "Item statuses",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "enum",
+                        "default": "stolen",
+                        "enum": [
+                            "stolen",
+                            "lost",
+                            "available",
+                            "aproved"
+                        ]
+                    },
+                    "color": {
+                        "type": "string",
+                        "example": "#FFFF4E4E"
+                    }
+                },
+                "type": "object"
+            },
+            "ItemPhotos": {
+                "title": "ItemPhotos",
+                "description": "Item photos",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "file": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ReportPhotos": {
+                "title": "ReportPhotos",
+                "description": "Report photos",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "report_id": {
+                        "type": "integer",
+                        "example": "3"
+                    },
+                    "file": {
+                        "type": "string",
+                        "example": "http://base_url/file_path/unique_file_name.jpg"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "iPhone.png"
+                    }
+                },
+                "type": "object"
+            },
+            "Report": {
+                "title": "Report",
+                "description": "Item reports",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "website": {
+                        "type": "string"
+                    },
+                    "reporter": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/PrivateUser"
+                            }
+                        ]
+                    },
+                    "item": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Item"
+                            }
+                        ]
+                    },
+                    "status": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ReportStatus"
+                            }
+                        ]
+                    },
+                    "photos": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReportPhotos"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ReportStatus": {
+                "title": "ReportStatus",
+                "description": "Item report status",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string",
+                        "default": "pending",
+                        "enum": [
+                            "pending",
+                            "approved",
+                            "rejected",
+                            "under_review"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "SearchItemsResponce": {
+                "title": "SearchItemsResponce",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "serial_number": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "reward": {
+                                    "type": "string"
+                                },
+                                "created_date": {
+                                    "type": "string"
+                                },
+                                "photo": {
+                                    "type": "string"
+                                },
+                                "transfer_ownership_id": {
+                                    "type": "integer"
+                                },
+                                "transfer_ownership_email": {
+                                    "type": "string"
+                                },
+                                "transfer_ownership_full_name": {
+                                    "type": "string"
+                                },
+                                "user_id": {
+                                    "type": "integer"
+                                },
+                                "user_email": {
+                                    "type": "string"
+                                },
+                                "user_full_name": {
+                                    "type": "string"
+                                },
+                                "user_address": {
+                                    "type": "string"
+                                },
+                                "status_id": {
+                                    "type": "integer"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "category_id": {
+                                    "type": "integer"
+                                },
+                                "category": {
+                                    "type": "string"
+                                },
+                                "subcategory_id": {
+                                    "type": "integer"
+                                },
+                                "subcategory": {
+                                    "type": "string"
+                                },
+                                "coefficient": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Responce2xx"
+                    }
+                ]
+            },
+            "Responce2xx": {
+                "title": "Responce2xx",
+                "properties": {
+                    "status": {
+                        "type": "integer",
+                        "example": "2xx"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Some Success Message."
+                    }
+                },
+                "type": "object"
+            },
+            "AuthResponce": {
+                "title": "AuthResponce",
+                "properties": {
+                    "data": {
+                        "properties": {
+                            "user": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                ]
+                            },
+                            "access_token": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Responce2xx"
+                    }
+                ]
+            },
+            "RegisterResponce": {
+                "title": "AuthResponce",
+                "properties": {
+                    "data": {
+                        "properties": {
+                            "user": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                ]
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Responce2xx"
+                    }
+                ]
+            },
+            "ItemResponce": {
+                "title": "ItemResponce",
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "default": 0
+                    },
+                    "total": {
+                        "type": "integer",
+                        "default": 0
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Item"
+                        }
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Responce2xx"
+                    }
+                ]
+            },
+            "ReportResponce": {
+                "title": "ItemResponce",
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 25
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Report"
+                        }
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Responce2xx"
+                    }
+                ]
+            },
+            "Responce307": {
+                "title": "Responce307",
+                "properties": {
+                    "action": {
+                        "type": "string",
+                        "example": "http://base_url/action-name"
+                    },
+                    "data": {
+                        "example": []
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Responce2xx"
+                    }
+                ]
+            },
+            "Error": {
+                "title": "Error",
+                "properties": {
+                    "status": {
+                        "type": "integer",
+                        "example": "Error code"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Some Error Message."
+                    }
+                },
+                "type": "object"
+            },
+            "Responce400": {
+                "title": "Responce400",
+                "properties": {
+                    "errors": {
+                        "type": "object",
+                        "example": {
+                            "key": [
+                                "message",
+                                "message1"
+                            ],
+                            "keyN": [
+                                "messageN"
+                            ]
+                        }
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Error"
+                    }
+                ]
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "apiKey",
+                "name": "Autorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth services",
+            "externalDocs": {
+                "description": "Find out more about Auth",
+                "url": "/api/docs/auth"
+            }
+        },
+        {
+            "name": "User",
+            "description": "User services",
+            "externalDocs": {
+                "description": "Find out more about User",
+                "url": "/api/docs/user"
+            }
+        },
+        {
+            "name": "Items",
+            "description": "Item services",
+            "externalDocs": {
+                "description": "Find out more about Items",
+                "url": "/api/docs/items"
+            }
+        },
+        {
+            "name": "Reports",
+            "description": "Report services",
+            "externalDocs": {
+                "description": "Find out more about Reports",
+                "url": "/api/docs/items_reports"
+            }
+        },
+        {
+            "name": "ReportComments",
+            "description": "Report Comment services",
+            "externalDocs": {
+                "description": "Find out more about Report Comments",
+                "url": "/api/docs/report_comments"
+            }
+        },
+        {
+            "name": "Search",
+            "description": "Search services",
+            "externalDocs": {
+                "description": "Find out more about Search",
+                "url": "/api/docs/search"
+            }
+        },
+        {
+            "name": "Category",
+            "description": "Category services",
+            "externalDocs": {
+                "description": "Find out more about Category",
+                "url": "/api/docs/category"
+            }
+        }
+    ]
+}
